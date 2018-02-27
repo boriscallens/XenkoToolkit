@@ -17,16 +17,16 @@ namespace XenkoToolkit.Demo
     /// </remarks>
     public class BasicCameraController : SyncScript
     {
-        private const float MaximumPitch = MathUtil.PiOverTwo * 0.99f;
+        private const float maximumPitch = MathUtil.PiOverTwo * 0.99f;
 
-        private Vector3 upVector;
-        private Vector3 translation;
-        private float yaw;
-        private float pitch;
+        private Vector3 _upVector;
+        private Vector3 _translation;
+        private float _yaw;
+        private float _pitch;
 
-        private Entity target;
+        private Entity _target;
 
-        private readonly EventReceiver<Entity> TargetAcquired
+        private readonly EventReceiver<Entity> _targetAcquired
            = new EventReceiver<Entity>(CameraExtensionsDemo.TargetAcquired);
 
 
@@ -49,7 +49,7 @@ namespace XenkoToolkit.Demo
             base.Start();
 
             // Default up-direction
-            upVector = Vector3.UnitY;
+            _upVector = Vector3.UnitY;
 
             // Configure touch input
             if (!Platform.IsWindowsDesktop)
@@ -61,9 +61,9 @@ namespace XenkoToolkit.Demo
 
         public override void Update()
         {
-            if(TargetAcquired.TryReceive(out var targetCandidate))
+            if(_targetAcquired.TryReceive(out var targetCandidate))
             {
-                target = targetCandidate;
+                _target = targetCandidate;
             }
 
             ProcessInput();
@@ -72,61 +72,61 @@ namespace XenkoToolkit.Demo
 
         private void ProcessInput()
         {
-            translation = Vector3.Zero;
-            yaw = 0;
-            pitch = 0;
+            _translation = Vector3.Zero;
+            _yaw = 0;
+            _pitch = 0;
 
             // Move with keyboard
             if (Input.IsKeyDown(Keys.W) || Input.IsKeyDown(Keys.Up))
             {
-                translation.Z = -KeyboardMovementSpeed.Z;
+                _translation.Z = -KeyboardMovementSpeed.Z;
             }
             else if (Input.IsKeyDown(Keys.S) || Input.IsKeyDown(Keys.Down))
             {
-                translation.Z = KeyboardMovementSpeed.Z;
+                _translation.Z = KeyboardMovementSpeed.Z;
             }
 
             if (Input.IsKeyDown(Keys.A) || Input.IsKeyDown(Keys.Left))
             {
-                translation.X = -KeyboardMovementSpeed.X;
+                _translation.X = -KeyboardMovementSpeed.X;
             }
             else if (Input.IsKeyDown(Keys.D) || Input.IsKeyDown(Keys.Right))
             {
-                translation.X = KeyboardMovementSpeed.X;
+                _translation.X = KeyboardMovementSpeed.X;
             }
 
             if (Input.IsKeyDown(Keys.Q))
             {
-                translation.Y = -KeyboardMovementSpeed.Y;
+                _translation.Y = -KeyboardMovementSpeed.Y;
             }
             else if (Input.IsKeyDown(Keys.E))
             {
-                translation.Y = KeyboardMovementSpeed.Y;
+                _translation.Y = KeyboardMovementSpeed.Y;
             }
 
             // Alternative translation speed
             if (Input.IsKeyDown(Keys.LeftShift) || Input.IsKeyDown(Keys.RightShift))
             {
-                translation *= SpeedFactor;
+                _translation *= SpeedFactor;
             }
 
             // Rotate with keyboard
             if (Input.IsKeyDown(Keys.NumPad2))
             {
-                pitch = KeyboardRotationSpeed.X;
+                _pitch = KeyboardRotationSpeed.X;
             }
             else if (Input.IsKeyDown(Keys.NumPad8))
             {
-                pitch = -KeyboardRotationSpeed.X;
+                _pitch = -KeyboardRotationSpeed.X;
             }
 
             if (Input.IsKeyDown(Keys.NumPad4))
             {
-                yaw = KeyboardRotationSpeed.Y;
+                _yaw = KeyboardRotationSpeed.Y;
             }
             else if (Input.IsKeyDown(Keys.NumPad6))
             {
-                yaw = -KeyboardRotationSpeed.Y;
+                _yaw = -KeyboardRotationSpeed.Y;
             }
 
             // Rotate with mouse
@@ -135,8 +135,8 @@ namespace XenkoToolkit.Demo
                 Input.LockMousePosition();
                 Game.IsMouseVisible = false;
 
-                yaw = -Input.MouseDelta.X * MouseRotationSpeed.X;
-                pitch = -Input.MouseDelta.Y * MouseRotationSpeed.Y;
+                _yaw = -Input.MouseDelta.X * MouseRotationSpeed.X;
+                _pitch = -Input.MouseDelta.Y * MouseRotationSpeed.Y;
             }
             else
             {
@@ -153,16 +153,16 @@ namespace XenkoToolkit.Demo
                     case GestureType.Drag:
                         var drag = (GestureEventDrag)gestureEvent;
                         var dragDistance = drag.DeltaTranslation;
-                        yaw = -dragDistance.X * TouchRotationSpeed.X;
-                        pitch = -dragDistance.Y * TouchRotationSpeed.Y;
+                        _yaw = -dragDistance.X * TouchRotationSpeed.X;
+                        _pitch = -dragDistance.Y * TouchRotationSpeed.Y;
                         break;
 
                     // Move along z-axis by scaling and in xy-plane by multi-touch dragging
                     case GestureType.Composite:
                         var composite = (GestureEventComposite)gestureEvent;
-                        translation.X = -composite.DeltaTranslation.X * TouchMovementSpeed.X;
-                        translation.Y = -composite.DeltaTranslation.Y * TouchMovementSpeed.Y;
-                        translation.Z = -(float)Math.Log(composite.DeltaScale + 1) * TouchMovementSpeed.Z;
+                        _translation.X = -composite.DeltaTranslation.X * TouchMovementSpeed.X;
+                        _translation.Y = -composite.DeltaTranslation.Y * TouchMovementSpeed.Y;
+                        _translation.Z = -(float)Math.Log(composite.DeltaScale + 1) * TouchMovementSpeed.Z;
                         break;
                 }
             }
@@ -172,15 +172,15 @@ namespace XenkoToolkit.Demo
         {
             var elapsedTime = (float)Game.UpdateTime.Elapsed.TotalSeconds;
 
-            translation *= elapsedTime;
-            yaw *= elapsedTime;
-            pitch *= elapsedTime;
+            _translation *= elapsedTime;
+            _yaw *= elapsedTime;
+            _pitch *= elapsedTime;
 
             // Get the local coordinate system
             var rotation = Matrix.RotationQuaternion(Entity.Transform.Rotation);
 
             // Enforce the global up-vector by adjusting the local x-axis
-            var right = Vector3.Cross(rotation.Forward, upVector);
+            var right = Vector3.Cross(rotation.Forward, _upVector);
             var up = Vector3.Cross(right, rotation.Forward);
 
             // Stabilize
@@ -188,21 +188,21 @@ namespace XenkoToolkit.Demo
             up.Normalize();
 
             // Adjust pitch. Prevent it from exceeding up and down facing. Stabilize edge cases.
-            var currentPitch = MathUtil.PiOverTwo - (float)Math.Acos(Vector3.Dot(rotation.Forward, upVector));
-            pitch = MathUtil.Clamp(currentPitch + pitch, -MaximumPitch, MaximumPitch) - currentPitch;
+            var currentPitch = MathUtil.PiOverTwo - (float)Math.Acos(Vector3.Dot(rotation.Forward, _upVector));
+            _pitch = MathUtil.Clamp(currentPitch + _pitch, -maximumPitch, maximumPitch) - currentPitch;
 
             // Move in local coordinates
             //Entity.Transform.Position += Vector3.TransformCoordinate(translation, rotation);
-            Entity.Transform.Translate(translation);
+            Entity.Transform.Translate(_translation);
 
-            if(target != null && Input.IsKeyDown(Keys.LeftCtrl))
+            if(_target != null && Input.IsKeyDown(Keys.LeftCtrl))
             {
-                Entity.Transform.LookAt(target.Transform,Game.GetDeltaTime() * 3);
+                Entity.Transform.LookAt(_target.Transform,Game.GetDeltaTime() * 3);
             }
             else
             {
                 // Yaw around global up-vector, pitch and roll in local space
-                Entity.Transform.Rotation *= Quaternion.RotationAxis(right, pitch) * Quaternion.RotationAxis(upVector, yaw);
+                Entity.Transform.Rotation *= Quaternion.RotationAxis(right, _pitch) * Quaternion.RotationAxis(_upVector, _yaw);
             }
             
         }

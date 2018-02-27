@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XenkoToolkit.Collections
 {
@@ -31,9 +28,7 @@ namespace XenkoToolkit.Collections
                 throw new ArgumentNullException(nameof(dicionary));
             }
 
-            TValue result = default(TValue);
-
-            if (dicionary.TryGetValue(key, out result))
+            if (dicionary.TryGetValue(key, out var result))
             {
                 return result;
             }
@@ -53,9 +48,7 @@ namespace XenkoToolkit.Collections
                 throw new ArgumentNullException(nameof(getValue));
             }
 
-            TValue result = default(TValue);
-
-            if (!dicionary.TryGetValue(key, out result))
+            if (!dicionary.TryGetValue(key, out var result))
             {
                 dicionary[key] = result = getValue(key);
             }
@@ -75,9 +68,7 @@ namespace XenkoToolkit.Collections
                 throw new ArgumentNullException(nameof(getValue));
             }
 
-            TValue result = default(TValue);
-
-            if (!dicionary.TryGetValue(key, out result))
+            if (!dicionary.TryGetValue(key, out var result))
             {
                 result = getValue(key);
 
@@ -95,8 +86,7 @@ namespace XenkoToolkit.Collections
                 throw new ArgumentNullException(nameof(dicionary));
             }
 
-            int result = default(int);
-            dicionary[key] = dicionary.TryGetValue(key, out result) ? result += 1 : result = 1;
+            dicionary[key] = dicionary.TryGetValue(key, out var result) ? result += 1 : result = 1;
             return result;
         }
     }

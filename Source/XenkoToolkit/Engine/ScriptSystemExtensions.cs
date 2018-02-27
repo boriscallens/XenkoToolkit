@@ -1,11 +1,9 @@
-﻿using SiliconStudio.Core.MicroThreading;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using SiliconStudio.Core.MicroThreading;
 using SiliconStudio.Xenko.Engine.Events;
 using SiliconStudio.Xenko.Engine.Processors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XenkoToolkit.Engine
 {
@@ -326,12 +324,10 @@ namespace XenkoToolkit.Engine
                         action(1.0f);
                         break;
                     }
-                    else
-                    {
-                        var progress = (float)(elapsedTime.TotalSeconds / duration.TotalSeconds);
 
-                        action(progress);
-                    }
+                    var progress = (float)(elapsedTime.TotalSeconds / duration.TotalSeconds);
+
+                    action(progress);
                     await scriptSystem.NextFrame();
                 }
             }

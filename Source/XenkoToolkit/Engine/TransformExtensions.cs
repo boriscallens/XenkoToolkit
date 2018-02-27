@@ -1,10 +1,6 @@
-﻿using SiliconStudio.Core.Mathematics;
+﻿using System;
+using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XenkoToolkit.Mathematics;
 
 namespace XenkoToolkit.Engine
@@ -99,26 +95,26 @@ namespace XenkoToolkit.Engine
             }
 
 
-            Quaternion rotation = Quaternion.Identity;
+            var rotation = Quaternion.Identity;
 
             if(relativeTo == Space.Self)
             {
                 //What do I do here???
-                if(eulerAngles.X != 0f)
+                if(Math.Abs(eulerAngles.X) > MathUtil.ZeroTolerance)
                 {
                     var right = transform.WorldMatrix.Right; right.Normalize();
                     Quaternion.RotationAxis(ref right, eulerAngles.X, out var axisRotation);
                     Quaternion.Multiply(ref rotation, ref axisRotation, out rotation);
                 }
 
-                if (eulerAngles.Y != 0f)
+                if (Math.Abs(eulerAngles.Y) > MathUtil.ZeroTolerance)
                 {
                     var up = transform.WorldMatrix.Up; up.Normalize();
                     Quaternion.RotationAxis(ref up, eulerAngles.Y, out var axisRotation);
                     Quaternion.Multiply(ref rotation, ref axisRotation, out rotation);
                 }
 
-                if (eulerAngles.Z != 0f)
+                if (Math.Abs(eulerAngles.Z) > MathUtil.ZeroTolerance)
                 {
                     var forward = transform.WorldMatrix.Forward; forward.Normalize();
                     Quaternion.RotationAxis(ref forward, eulerAngles.Z, out var axisRotation);
@@ -319,7 +315,7 @@ namespace XenkoToolkit.Engine
 
             MathUtilEx.LookRotation(ref localEye, ref localTarget, ref localUp, out var lookRotation);
 
-            if(smooth == 1.0f)
+            if(Math.Abs(smooth - 1.0f) < MathUtil.ZeroTolerance)
             {
                 transform.Rotation = lookRotation;
             }

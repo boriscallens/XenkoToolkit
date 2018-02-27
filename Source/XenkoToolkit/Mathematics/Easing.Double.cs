@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SiliconStudio.Core.Mathematics;
 
 namespace XenkoToolkit.Mathematics
 {
     public static partial class Easing
     {
-        private const double PiOverTwo = 1.57079637;
+        private const double piOverTwo = 1.57079637;
 
         /// <summary>
         /// Performs easing using the specified function.
@@ -21,7 +17,6 @@ namespace XenkoToolkit.Mathematics
         {
             switch (function)
             {
-                default:
                 case EasingFunction.Linear: return Linear(amount);
                 case EasingFunction.QuadraticEaseOut: return QuadraticEaseOut(amount);
                 case EasingFunction.QuadraticEaseIn: return QuadraticEaseIn(amount);
@@ -53,6 +48,7 @@ namespace XenkoToolkit.Mathematics
                 case EasingFunction.BounceEaseIn: return BounceEaseIn(amount);
                 case EasingFunction.BounceEaseOut: return BounceEaseOut(amount);
                 case EasingFunction.BounceEaseInOut: return BounceEaseInOut(amount);
+                default: return Linear(amount);
             }
         }
 
@@ -61,7 +57,6 @@ namespace XenkoToolkit.Mathematics
         /// </summary>
         /// <param name="amount">The amount.</param>
         /// <returns>The amount eased.</returns>
-        /// <remarks>
         /// <remarks>
         /// Modeled after the line y = x
         /// </remarks>
@@ -97,10 +92,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 2 * amount * amount;
             }
-            else
-            {
-                return (-2 * amount * amount) + (4 * amount) - 1;
-            }
+
+            return (-2 * amount * amount) + (4 * amount) - 1;
         }
 
         /// <remarks>
@@ -116,7 +109,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double CubicEaseOut(double amount)
         {
-            double f = (amount - 1);
+            var f = (amount - 1);
             return f * f * f + 1;
         }
 
@@ -131,11 +124,9 @@ namespace XenkoToolkit.Mathematics
             {
                 return 4 * amount * amount * amount;
             }
-            else
-            {
-                double f = ((2 * amount) - 2);
-                return 0.5 * f * f * f + 1;
-            }
+
+            var f = ((2 * amount) - 2);
+            return 0.5 * f * f * f + 1;
         }
 
         /// <remarks>
@@ -151,7 +142,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double QuarticEaseOut(double amount)
         {
-            double f = (amount - 1);
+            var f = (amount - 1);
             return f * f * f * (1 - amount) + 1;
         }
 
@@ -166,11 +157,9 @@ namespace XenkoToolkit.Mathematics
             {
                 return 8 * amount * amount * amount * amount;
             }
-            else
-            {
-                double f = (amount - 1);
-                return -8 * f * f * f * f + 1;
-            }
+
+            var f = (amount - 1);
+            return -8 * f * f * f * f + 1;
         }
 
         /// <remarks>
@@ -186,7 +175,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double QuinticEaseOut(double amount)
         {
-            double f = (amount - 1);
+            var f = (amount - 1);
             return f * f * f * f * f + 1;
         }
 
@@ -201,11 +190,9 @@ namespace XenkoToolkit.Mathematics
             {
                 return 16 * amount * amount * amount * amount * amount;
             }
-            else
-            {
-                double f = ((2 * amount) - 2);
-                return 0.5 * f * f * f * f * f + 1;
-            }
+
+            var f = ((2 * amount) - 2);
+            return 0.5 * f * f * f * f * f + 1;
         }
 
         /// <remarks>
@@ -213,7 +200,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double SineEaseIn(double amount)
         {
-            return Math.Sin((amount - 1) * PiOverTwo) + 1;
+            return Math.Sin((amount - 1) * piOverTwo) + 1;
         }
 
         /// <remarks>
@@ -221,7 +208,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double SineEaseOut(double amount)
         {
-            return Math.Sin(amount * PiOverTwo);
+            return Math.Sin(amount * piOverTwo);
         }
 
         /// <remarks>
@@ -259,10 +246,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 0.5 * (1 - Math.Sqrt(1 - 4 * (amount * amount)));
             }
-            else
-            {
-                return 0.5 * (Math.Sqrt(-((2 * amount) - 3) * ((2 * amount) - 1)) + 1);
-            }
+
+            return 0.5 * (Math.Sqrt(-((2 * amount) - 3) * ((2 * amount) - 1)) + 1);
         }
 
         /// <remarks>
@@ -270,7 +255,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double ExponentialEaseIn(double amount)
         {
-            return (amount == 0.0) ? amount : Math.Pow(2, 10 * (amount - 1));
+            return (Math.Abs(amount) < MathUtil.ZeroTolerance) ? amount : Math.Pow(2, 10 * (amount - 1));
         }
 
         /// <remarks>
@@ -278,7 +263,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double ExponentialEaseOut(double amount)
         {
-            return (amount == 1.0) ? amount : 1 - Math.Pow(2, -10 * amount);
+            return (Math.Abs(amount - 1.0) < MathUtil.ZeroTolerance) ? amount : 1 - Math.Pow(2, -10 * amount);
         }
 
         /// <remarks>
@@ -288,16 +273,14 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double ExponentialEaseInOut(double amount)
         {
-            if (amount == 0.0 || amount == 1.0) return amount;
+            if (Math.Abs(amount) < MathUtil.ZeroTolerance || Math.Abs(amount - 1.0) < MathUtil.ZeroTolerance) return amount;
 
             if (amount < 0.5)
             {
                 return 0.5 * Math.Pow(2, (20 * amount) - 10);
             }
-            else
-            {
-                return -0.5 * Math.Pow(2, (-20 * amount) + 10) + 1;
-            }
+
+            return -0.5 * Math.Pow(2, (-20 * amount) + 10) + 1;
         }
 
         /// <remarks>
@@ -305,7 +288,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double ElasticEaseIn(double amount)
         {
-            return Math.Sin(13 * PiOverTwo * amount) * Math.Pow(2, 10 * (amount - 1));
+            return Math.Sin(13 * piOverTwo * amount) * Math.Pow(2, 10 * (amount - 1));
         }
 
         /// <remarks>
@@ -313,7 +296,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static double ElasticEaseOut(double amount)
         {
-            return Math.Sin(-13 * PiOverTwo * (amount + 1)) * Math.Pow(2, -10 * amount) + 1;
+            return Math.Sin(-13 * piOverTwo * (amount + 1)) * Math.Pow(2, -10 * amount) + 1;
         }
 
         /// <remarks>
@@ -325,12 +308,11 @@ namespace XenkoToolkit.Mathematics
         {
             if (amount < 0.5)
             {
-                return 0.5 * Math.Sin(13 * PiOverTwo * (2 * amount)) * Math.Pow(2, 10 * ((2 * amount) - 1));
+                return 0.5 * Math.Sin(13 * piOverTwo * (2 * amount)) * Math.Pow(2, 10 * ((2 * amount) - 1));
             }
-            else
-            {
-                return 0.5 * (Math.Sin(-13 * PiOverTwo * ((2 * amount - 1) + 1)) * Math.Pow(2, -10 * (2 * amount - 1)) + 2);
-            }
+
+            return 0.5 * (Math.Sin(-13 * piOverTwo * ((2 * amount - 1) + 1)) * Math.Pow(2, -10 * (2 * amount - 1)) +
+                          2);
         }
 
         /// <remarks>
@@ -346,7 +328,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>	
         public static double BackEaseOut(double amount)
         {
-            double f = (1 - amount);
+            var f = (1 - amount);
             return 1 - (f * f * f - f * Math.Sin(f * Math.PI));
         }
 
@@ -359,12 +341,12 @@ namespace XenkoToolkit.Mathematics
         {
             if (amount < 0.5)
             {
-                double f = 2 * amount;
+                var f = 2 * amount;
                 return 0.5 * (f * f * f - f * Math.Sin(f * Math.PI));
             }
             else
             {
-                double f = (1 - (2 * amount - 1));
+                var f = (1 - (2 * amount - 1));
                 return 0.5 * (1 - (f * f * f - f * Math.Sin(f * Math.PI))) + 0.5;
             }
         }
@@ -384,18 +366,18 @@ namespace XenkoToolkit.Mathematics
             {
                 return (121 * amount * amount) / 16.0;
             }
-            else if (amount < 8 / 11.0)
+
+            if (amount < 8 / 11.0)
             {
                 return (363 / 40.0 * amount * amount) - (99 / 10.0 * amount) + 17 / 5.0;
             }
-            else if (amount < 9 / 10.0)
+
+            if (amount < 9 / 10.0)
             {
                 return (4356 / 361.0 * amount * amount) - (35442 / 1805.0 * amount) + 16061 / 1805.0;
             }
-            else
-            {
-                return (54 / 5.0 * amount * amount) - (513 / 25.0 * amount) + 268 / 25.0;
-            }
+
+            return (54 / 5.0 * amount * amount) - (513 / 25.0 * amount) + 268 / 25.0;
         }
 
         /// <remarks>
@@ -406,10 +388,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 0.5 * BounceEaseIn(amount * 2);
             }
-            else
-            {
-                return 0.5 * BounceEaseOut(amount * 2 - 1) + 0.5;
-            }
+
+            return 0.5 * BounceEaseOut(amount * 2 - 1) + 0.5;
         }
     }
 }

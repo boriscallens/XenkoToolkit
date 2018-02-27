@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SiliconStudio.Core.Mathematics;
 
 namespace XenkoToolkit.Mathematics
@@ -25,7 +21,6 @@ namespace XenkoToolkit.Mathematics
         {
             switch (function)
             {
-                default:
                 case EasingFunction.Linear: return Linear(amount);
                 case EasingFunction.QuadraticEaseOut: return QuadraticEaseOut(amount);
                 case EasingFunction.QuadraticEaseIn: return QuadraticEaseIn(amount);
@@ -57,6 +52,7 @@ namespace XenkoToolkit.Mathematics
                 case EasingFunction.BounceEaseIn: return BounceEaseIn(amount);
                 case EasingFunction.BounceEaseOut: return BounceEaseOut(amount);
                 case EasingFunction.BounceEaseInOut: return BounceEaseInOut(amount);
+                default: return Linear(amount);
             }
         }
 
@@ -100,10 +96,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 2 * amount * amount;
             }
-            else
-            {
-                return (-2 * amount * amount) + (4 * amount) - 1;
-            }
+
+            return (-2 * amount * amount) + (4 * amount) - 1;
         }
 
         /// <remarks>
@@ -119,7 +113,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static float CubicEaseOut(float amount)
         {
-            float f = (amount - 1);
+            var f = (amount - 1);
             return f * f * f + 1;
         }
 
@@ -134,11 +128,9 @@ namespace XenkoToolkit.Mathematics
             {
                 return 4 * amount * amount * amount;
             }
-            else
-            {
-                float f = ((2 * amount) - 2);
-                return 0.5f * f * f * f + 1;
-            }
+
+            var f = ((2 * amount) - 2);
+            return 0.5f * f * f * f + 1;
         }
 
         /// <remarks>
@@ -154,7 +146,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static float QuarticEaseOut(float amount)
         {
-            float f = (amount - 1);
+            var f = (amount - 1);
             return f * f * f * (1 - amount) + 1;
         }
 
@@ -169,11 +161,9 @@ namespace XenkoToolkit.Mathematics
             {
                 return 8 * amount * amount * amount * amount;
             }
-            else
-            {
-                float f = (amount - 1);
-                return -8 * f * f * f * f + 1;
-            }
+
+            var f = (amount - 1);
+            return -8 * f * f * f * f + 1;
         }
 
         /// <remarks>
@@ -189,7 +179,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static float QuinticEaseOut(float amount)
         {
-            float f = (amount - 1);
+            var f = (amount - 1);
             return f * f * f * f * f + 1;
         }
 
@@ -204,11 +194,9 @@ namespace XenkoToolkit.Mathematics
             {
                 return 16 * amount * amount * amount * amount * amount;
             }
-            else
-            {
-                float f = ((2 * amount) - 2);
-                return 0.5f * f * f * f * f * f + 1;
-            }
+
+            var f = ((2 * amount) - 2);
+            return 0.5f * f * f * f * f * f + 1;
         }
 
         /// <remarks>
@@ -262,10 +250,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 0.5f * (1 - (float)Math.Sqrt(1 - 4 * (amount * amount)));
             }
-            else
-            {
-                return 0.5f * ((float)Math.Sqrt(-((2 * amount) - 3) * ((2 * amount) - 1)) + 1);
-            }
+
+            return 0.5f * ((float)Math.Sqrt(-((2 * amount) - 3) * ((2 * amount) - 1)) + 1);
         }
 
         /// <remarks>
@@ -273,7 +259,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static float ExponentialEaseIn(float amount)
         {
-            return (amount == 0.0f) ? amount : (float)Math.Pow(2, 10 * (amount - 1));
+            return (Math.Abs(amount) < MathUtil.ZeroTolerance) ? amount : (float)Math.Pow(2, 10 * (amount - 1));
         }
 
         /// <remarks>
@@ -281,7 +267,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static float ExponentialEaseOut(float amount)
         {
-            return (amount == 1.0f) ? amount : 1 - (float)Math.Pow(2, -10 * amount);
+            return (Math.Abs(amount - 1.0f) < MathUtil.ZeroTolerance) ? amount : 1 - (float)Math.Pow(2, -10 * amount);
         }
 
         /// <remarks>
@@ -291,16 +277,14 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>
         public static float ExponentialEaseInOut(float amount)
         {
-            if (amount == 0.0 || amount == 1.0) return amount;
+            if (Math.Abs(amount) < MathUtil.ZeroTolerance || Math.Abs(amount - 1.0) < MathUtil.ZeroTolerance) return amount;
 
             if (amount < 0.5f)
             {
                 return 0.5f * (float)Math.Pow(2, (20 * amount) - 10);
             }
-            else
-            {
-                return -0.5f * (float)Math.Pow(2, (-20 * amount) + 10) + 1;
-            }
+
+            return -0.5f * (float)Math.Pow(2, (-20 * amount) + 10) + 1;
         }
 
         /// <remarks>
@@ -330,10 +314,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 0.5f * (float)Math.Sin(13 * MathUtil.PiOverTwo * (2 * amount)) * (float)Math.Pow(2, 10 * ((2 * amount) - 1));
             }
-            else
-            {
-                return 0.5f * ((float)Math.Sin(-13 * MathUtil.PiOverTwo * ((2 * amount - 1) + 1)) * (float)Math.Pow(2, -10 * (2 * amount - 1)) + 2);
-            }
+
+            return 0.5f * ((float)Math.Sin(-13 * MathUtil.PiOverTwo * ((2 * amount - 1) + 1)) * (float)Math.Pow(2, -10 * (2 * amount - 1)) + 2);
         }
 
         /// <remarks>
@@ -349,7 +331,7 @@ namespace XenkoToolkit.Mathematics
         /// </remarks>	
         public static float BackEaseOut(float amount)
         {
-            float f = (1 - amount);
+            var f = (1 - amount);
             return 1 - (f * f * f - f * (float)Math.Sin(f * MathUtil.Pi));
         }
 
@@ -362,12 +344,12 @@ namespace XenkoToolkit.Mathematics
         {
             if (amount < 0.5f)
             {
-                float f = 2 * amount;
+                var f = 2 * amount;
                 return 0.5f * (f * f * f - f * (float)Math.Sin(f * MathUtil.Pi));
             }
             else
             {
-                float f = (1 - (2 * amount - 1));
+                var f = (1 - (2 * amount - 1));
                 return 0.5f * (1 - (f * f * f - f * (float)Math.Sin(f * MathUtil.Pi))) + 0.5f;
             }
         }
@@ -387,18 +369,18 @@ namespace XenkoToolkit.Mathematics
             {
                 return (121 * amount * amount) / 16.0f;
             }
-            else if (amount < 8 / 11.0f)
+
+            if (amount < 8 / 11.0f)
             {
                 return (363 / 40.0f * amount * amount) - (99 / 10.0f * amount) + 17 / 5.0f;
             }
-            else if (amount < 9 / 10.0f)
+
+            if (amount < 9 / 10.0f)
             {
                 return (4356 / 361.0f * amount * amount) - (35442 / 1805.0f * amount) + 16061 / 1805.0f;
             }
-            else
-            {
-                return (54 / 5.0f * amount * amount) - (513 / 25.0f * amount) + 268 / 25.0f;
-            }
+
+            return (54 / 5.0f * amount * amount) - (513 / 25.0f * amount) + 268 / 25.0f;
         }
 
         /// <remarks>
@@ -409,10 +391,8 @@ namespace XenkoToolkit.Mathematics
             {
                 return 0.5f * BounceEaseIn(amount * 2);
             }
-            else
-            {
-                return 0.5f * BounceEaseOut(amount * 2 - 1) + 0.5f;
-            }
+
+            return 0.5f * BounceEaseOut(amount * 2 - 1) + 0.5f;
         }
     }
 }

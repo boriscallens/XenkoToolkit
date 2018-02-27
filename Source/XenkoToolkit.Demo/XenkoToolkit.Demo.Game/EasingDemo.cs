@@ -1,11 +1,10 @@
-﻿using SiliconStudio.Core;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Engine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using SiliconStudio.Core.Mathematics;
+using SiliconStudio.Xenko.Engine;
+using SiliconStudio.Xenko.Input;
 using XenkoToolkit.Engine;
 using XenkoToolkit.Mathematics;
 
@@ -36,7 +35,7 @@ namespace XenkoToolkit.Demo
                 var sphere = SpherePrefab.InstantiateSingle(FirstPosition);
                 Entity.Scene.Entities.Add(sphere);
 
-                Script.AddOverTimeAction((progress) =>
+                Script.AddOverTimeAction(progress =>
                 {
                     sphere.Transform.Position = MathUtilEx.Interpolate(startPosition, endPosition, progress,EasingFunction.ElasticEaseOut);   
 
@@ -48,9 +47,9 @@ namespace XenkoToolkit.Demo
             var startPositions = new List<Vector3>();
             var transforms = new List<TransformComponent>();
 
-            for (int i = 0; i < easingFunctions.Count; i++)
+            for (var i = 0; i < easingFunctions.Count; i++)
             {
-                Vector3 startPosition = FirstPosition + new Vector3(i + 1, 0, 0);
+                var startPosition = FirstPosition + new Vector3(i + 1, 0, 0);
                 var sphere = SpherePrefab.InstantiateSingle(startPosition);
 
                 transforms.Add(sphere.Transform);
@@ -70,7 +69,7 @@ namespace XenkoToolkit.Demo
 
                 DebugText.Print($"Progress = {progress}", new Int2(10));
 
-                for (int i = 0; i < transforms.Count; i++)
+                for (var i = 0; i < transforms.Count; i++)
                 {
                     var t = transforms[i];
 
@@ -82,7 +81,7 @@ namespace XenkoToolkit.Demo
 
                 elapsed += Game.UpdateTime.Elapsed;
 
-                if (Input.IsKeyPressed(SiliconStudio.Xenko.Input.Keys.Space))
+                if (Input.IsKeyPressed(Keys.Space))
                 {
                     //reset
                     elapsed = TimeSpan.Zero;

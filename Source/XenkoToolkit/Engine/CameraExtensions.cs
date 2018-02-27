@@ -1,11 +1,6 @@
-﻿using SiliconStudio.Core.Mathematics;
+﻿using System;
+using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
-using SiliconStudio.Xenko.Rendering.Compositing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XenkoToolkit.Mathematics;
 
 namespace XenkoToolkit.Engine
@@ -95,7 +90,7 @@ namespace XenkoToolkit.Engine
             var screenSpace = new Vector2
             {
                 X = (clipSpace.X + 1f) / 2f,
-                Y = 1f - (clipSpace.Y + 1f) / 2f,
+                Y = 1f - (clipSpace.Y + 1f) / 2f
             };
 
             return screenSpace;
@@ -115,7 +110,7 @@ namespace XenkoToolkit.Engine
                 throw new ArgumentNullException(nameof(cameraComponent));
             }
 
-            Matrix inverseViewProjection = Matrix.Invert(cameraComponent.ViewProjectionMatrix);
+            var inverseViewProjection = Matrix.Invert(cameraComponent.ViewProjectionMatrix);
 
             Vector3 clipSpace;
             clipSpace.X = position.X * 2f - 1f;
@@ -145,7 +140,7 @@ namespace XenkoToolkit.Engine
                 throw new ArgumentNullException(nameof(cameraComponent));
             }
 
-            Matrix inverseViewProjection = Matrix.Invert(cameraComponent.ViewProjectionMatrix);
+            var inverseViewProjection = Matrix.Invert(cameraComponent.ViewProjectionMatrix);
 
             Vector3 clipSpace;
             clipSpace.X = position.X * 2f - 1f;

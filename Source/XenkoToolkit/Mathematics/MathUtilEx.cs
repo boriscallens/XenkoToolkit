@@ -1,10 +1,6 @@
-﻿using SiliconStudio.Core.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using SiliconStudio.Core.Mathematics;
 
 namespace XenkoToolkit.Mathematics
 {
@@ -83,20 +79,19 @@ namespace XenkoToolkit.Mathematics
 
 
             Orthonormalize(ref forward, ref up);
-            Vector3 right;
-            Vector3.Cross(ref up, ref forward, out right);
+            Vector3.Cross(ref up, ref forward, out var right);
 
             right.Normalize();
 
             var w = (float)Math.Sqrt(1.0f + right.X + up.Y + forward.Z) * 0.5f;
-            var w4_recip = 1.0f / (4.0f * w);
+            var w4Recip = 1.0f / (4.0f * w);
 
-            result = new Quaternion()
+            result = new Quaternion
             {
                 W = w,
-                X = (up.Z - forward.Y) * w4_recip,
-                Y = (forward.X - right.Z) * w4_recip,
-                Z = (right.Y - up.X) * w4_recip,
+                X = (up.Z - forward.Y) * w4Recip,
+                Y = (forward.X - right.Z) * w4Recip,
+                Z = (right.Y - up.X) * w4Recip
             };
 
         }
@@ -164,7 +159,7 @@ namespace XenkoToolkit.Mathematics
         /// <summary>
         /// Convert <see cref="Quaternion"/> to rotation Euler angles.
         /// </summary>
-        /// <param name="rotationEulerXYZ">The rotation.</param>
+        /// <param name="rotation">The rotation.</param>
         /// <param name="result">Reulting euler rotation, with XYZ order.</param>
         public static void ToRotationEulerXYZ(ref Quaternion rotation, out Vector3 result)
         {
@@ -173,17 +168,17 @@ namespace XenkoToolkit.Mathematics
             //  Matrix rotationMatrix;
             //  Matrix.Rotation(ref cachedRotation, out rotationMatrix);
             //  rotationMatrix.DecomposeXYZ(out rotationEuler);
-            float xx = rotation.X * rotation.X;
-            float yy = rotation.Y * rotation.Y;
-            float zz = rotation.Z * rotation.Z;
-            float xy = rotation.X * rotation.Y;
-            float zw = rotation.Z * rotation.W;
-            float zx = rotation.Z * rotation.X;
-            float yw = rotation.Y * rotation.W;
-            float yz = rotation.Y * rotation.Z;
-            float xw = rotation.X * rotation.W;
+            var xx = rotation.X * rotation.X;
+            var yy = rotation.Y * rotation.Y;
+            var zz = rotation.Z * rotation.Z;
+            var xy = rotation.X * rotation.Y;
+            var zw = rotation.Z * rotation.W;
+            var zx = rotation.Z * rotation.X;
+            var yw = rotation.Y * rotation.W;
+            var yz = rotation.Y * rotation.Z;
+            var xw = rotation.X * rotation.W;
             result.Y = (float)Math.Asin(2.0f * (yw - zx));
-            double test = Math.Cos(result.Y);
+            var test = Math.Cos(result.Y);
             if (test > 1e-6f)
             {
                 result.Z = (float)Math.Atan2(2.0f * (xy + zw), 1.0f - (2.0f * (yy + zz)));
@@ -200,7 +195,7 @@ namespace XenkoToolkit.Mathematics
         /// <summary>
         /// Convert <see cref="Quaternion"/> to rotation Euler angles.
         /// </summary>
-        /// <param name="rotationEulerXYZ">The rotation.</param>
+        /// <param name="rotation">The rotation.</param>
         /// <returns>Reulting euler rotation, with XYZ order.</returns>
         public static Vector3 ToRotationEulerXYZ(this Quaternion rotation)
         {
@@ -215,10 +210,10 @@ namespace XenkoToolkit.Mathematics
         /// <param name="end">End value.</param>
         /// <param name="amount">Value between 0 and 1 indicating the weight of <paramref name="end"/>.</param>
         /// <param name="easingFunction">The function used to ease the interpolation.</param>
-        /// <param name="result">When the method completes, contains the interpolation of the two value.</param>
         /// <remarks>
         /// Passing <paramref name="amount"/> a value of 0 will cause <paramref name="start"/> to be returned; a value of 1 will cause <paramref name="end"/> to be returned. 
         /// </remarks>
+        /// <returns>When the method completes, contains the interpolation of the two value.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Interpolate(float start, float end, float amount, EasingFunction easingFunction)
         {

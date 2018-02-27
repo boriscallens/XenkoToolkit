@@ -1,34 +1,33 @@
-﻿using SiliconStudio.Core.Mathematics;
+﻿using System;
+using System.Collections.Generic;
+using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Core.MicroThreading;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Engine.Events;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using XenkoToolkit.Engine;
 
 namespace XenkoToolkit.Demo
 {
     public class ReceiverScript : StartupScript
     {
-        private readonly EventReceiver<Vector2> EventTwoReciever
+        private readonly EventReceiver<Vector2> _eventTwoReciever
             = new EventReceiver<Vector2>(SenderScript.EventTwo);
 
-        private List<MicroThread> tasks;
+        private List<MicroThread> _tasks;
 
         public override void Start()
         {
             //Keep a list of tasks to stop on cancel
-            tasks = new List<MicroThread>()
+            _tasks = new List<MicroThread>
             {
                 //Directly using EventKey so you don't have to declare EventReciever:
-                Script.AddOnEventAction(SenderScript.EventOne, (Action<Vector2>)this.HandleOne),
+                Script.AddOnEventAction(SenderScript.EventOne, HandleOne),
                 //Using an EventReciever:
-                Script.AddOnEventAction(EventTwoReciever, (Action<Vector2>)this.HandleTwo),
+                Script.AddOnEventAction(_eventTwoReciever, HandleTwo),
 
                 Script.AddAction(DelayedAction, TimeSpan.FromSeconds(2)),
 
-                Script.AddAction(DelayRepeatAction, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2)),
+                Script.AddAction(DelayRepeatAction, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2))
             };
         }
 
@@ -55,7 +54,7 @@ namespace XenkoToolkit.Demo
         public override void Cancel()
         {
             base.Cancel();
-            tasks.CancelAll();
+            _tasks.CancelAll();
             
             DebugText.Update(Game.UpdateTime);
         }

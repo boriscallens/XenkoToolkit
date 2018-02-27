@@ -1,10 +1,7 @@
-﻿using SiliconStudio.Core.Collections;
-using SiliconStudio.Xenko.Physics;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SiliconStudio.Core.Collections;
+using SiliconStudio.Xenko.Physics;
 using XenkoToolkit.Mathematics;
 
 namespace XenkoToolkit.Physics

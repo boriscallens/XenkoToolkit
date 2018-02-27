@@ -1,14 +1,9 @@
 ﻿using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Engine.Events;
+using SiliconStudio.Xenko.Input;
 using SiliconStudio.Xenko.Physics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XenkoToolkit.Engine;
-using XenkoToolkit.Mathematics;
 using XenkoToolkit.Physics;
 
 namespace XenkoToolkit.Demo
@@ -17,7 +12,7 @@ namespace XenkoToolkit.Demo
     {
         public static readonly EventKey<Entity> TargetAcquired = new EventKey<Entity>(eventName: "TargetAcquired");
         
-        private string message;
+        private string _message;
 
         public CameraComponent MainCamera { get; set; }
 
@@ -37,9 +32,9 @@ namespace XenkoToolkit.Demo
 
             DebugText.Print($"ScreenToWorldRaySegment {MainCamera.ScreenToWorldRaySegment(Input.MousePosition)}", new Int2(20, 40));
 
-            if (Input.IsMouseButtonPressed(SiliconStudio.Xenko.Input.MouseButton.Left))
+            if (Input.IsMouseButtonPressed(MouseButton.Left))
             {
-                message = "";
+                _message = "";
 
 
                 var ray = MainCamera.ScreenToWorldRaySegment(Input.MousePosition);
@@ -47,7 +42,7 @@ namespace XenkoToolkit.Demo
                 var hitResult = this.GetSimulation().Raycast(ray);
                 if (hitResult.Succeeded)
                 {
-                    message = hitResult.Collider.Entity.Name;
+                    _message = hitResult.Collider.Entity.Name;
                    
                     MainCamera.Entity.Transform.LookAt(hitResult.Collider.Entity.Transform);
                     TargetAcquired.Broadcast(hitResult.Collider.Entity);
@@ -56,7 +51,7 @@ namespace XenkoToolkit.Demo
                 {
                     TargetAcquired.Broadcast(null);
                 }
-                DebugText.Print($"Clicked on {message}", new Int2(20, 60));
+                DebugText.Print($"Clicked on {_message}", new Int2(20, 60));
             }
 
             //DebugText.Print($"Main {SceneSystem.GetMainCamera() != null}", new Int2(20, 40));

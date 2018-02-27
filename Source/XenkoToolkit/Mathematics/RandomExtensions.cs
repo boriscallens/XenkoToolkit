@@ -1,10 +1,5 @@
-﻿using SiliconStudio.Core.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using SiliconStudio.Core.Mathematics;
 
 namespace XenkoToolkit.Mathematics
 {
@@ -26,7 +21,7 @@ namespace XenkoToolkit.Mathematics
                 throw new ArgumentNullException(nameof(random));
             }
 
-            return (float)random.NextDouble();
+            return (float) random.NextDouble();
         }
 
         /// <summary>
@@ -44,7 +39,6 @@ namespace XenkoToolkit.Mathematics
             }
 
             return Vector2.Lerp(region.TopLeft, region.BottomRight, random.NextSingle());
-            
         }
 
         /// <summary>
@@ -62,7 +56,6 @@ namespace XenkoToolkit.Mathematics
             }
 
             return Vector3.Lerp(region.Minimum, region.Maximum, random.NextSingle());
-
         }
 
         /// <summary>
@@ -115,8 +108,8 @@ namespace XenkoToolkit.Mathematics
 
             return new Vector2
             {
-                X = (float)Math.Cos(random.NextDouble()) * randomRadius,
-                Y = (float)Math.Sin(random.NextDouble()) * randomRadius,
+                X = (float) Math.Cos(random.NextDouble()) * randomRadius,
+                Y = (float) Math.Sin(random.NextDouble()) * randomRadius
             };
         }
 
@@ -135,6 +128,6 @@ namespace XenkoToolkit.Mathematics
             }
 
             return new Color(NextDirection3D(random));
-        }       
+        }
     }
 }

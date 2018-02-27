@@ -3,6 +3,6 @@
     public enum Space
     {
         World,
-        Self,
+        Self
     }
 }

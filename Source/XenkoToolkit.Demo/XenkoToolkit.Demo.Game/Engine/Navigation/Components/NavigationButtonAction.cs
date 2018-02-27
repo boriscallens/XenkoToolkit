@@ -1,7 +1,8 @@
-﻿using SiliconStudio.Core;
+﻿using System;
 using System.Threading.Tasks;
+using SiliconStudio.Core;
 
-namespace XenkoToolkit.Engine.Navigation.Components
+namespace XenkoToolkit.Demo.Engine.Navigation.Components
 {
     [DataContract]
     public abstract class NavigationButtonAction : INavigationButtonAction
@@ -22,7 +23,7 @@ namespace XenkoToolkit.Engine.Navigation.Components
         {
             if (navigationService == null)
             {
-                throw new System.ArgumentNullException(nameof(navigationService));
+                throw new ArgumentNullException(nameof(navigationService));
             }
 
             return await navigationService.NavigateAsync(SceneUrl, KeepLoaded, RememberCurrent);
@@ -36,7 +37,7 @@ namespace XenkoToolkit.Engine.Navigation.Components
         {
             if (navigationService == null)
             {
-                throw new System.ArgumentNullException(nameof(navigationService));
+                throw new ArgumentNullException(nameof(navigationService));
             }
 
             return await navigationService.GoBackAsync(RememberCurrent);
@@ -50,7 +51,7 @@ namespace XenkoToolkit.Engine.Navigation.Components
         {
             if (navigationService == null)
             {
-                throw new System.ArgumentNullException(nameof(navigationService));
+                throw new ArgumentNullException(nameof(navigationService));
             }
 
             return await navigationService.GoForwardAsync(RememberCurrent);

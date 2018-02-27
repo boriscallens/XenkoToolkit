@@ -24,9 +24,9 @@
     <SiliconStudioProjectType>Library</SiliconStudioProjectType>
   </PropertyGroup>
   <PropertyGroup>
-    <CustomBuildToolsDir>$(MSBuildThisFileDirectory)..\..\Build</CustomBuildToolsDir>    
+    <CustomBuildToolsDir>$(MSBuildThisFileDirectory)..\..\Build</CustomBuildToolsDir>
   </PropertyGroup>
-  <Import Project="$(CustomBuildToolsDir)\MSBuild.Community.Tasks.Targets"/>
+  <Import Project="$(CustomBuildToolsDir)\MSBuild.Community.Tasks.Targets" />
   <PropertyGroup>
     <Major>0</Major>
     <Minor>1</Minor>
@@ -36,18 +36,7 @@
     <CopyrightYear>$([System.DateTime]::Now.Year)</CopyrightYear>
   </PropertyGroup>
   <Target Name="Version" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <AssemblyInfo CodeLanguage="CS" 
-                  OutputFile="Properties\AssemblyInfo.cs" 
-                  AssemblyTitle="XenkoToolkit" 
-                  AssemblyDescription="A Toolkit for the Xenko game engine. Xenko version $(SiliconStudioPackageXenkoVersion)." 
-                  AssemblyCompany="dfkeenan" 
-                  AssemblyProduct="XenkoToolkit" 
-                  AssemblyCopyright="Copyright © $(CopyrightYear)" 
-                  ComVisible="false" 
-                  CLSCompliant="false" 
-                  AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision)$(PreRelease)" 
-                  AssemblyVersion="$(Major).$(Minor).$(Build)" 
-                  AssemblyFileVersion="$(Major).$(Minor).$(Build)" />
+    <AssemblyInfo CodeLanguage="CS" OutputFile="Properties\AssemblyInfo.cs" AssemblyTitle="XenkoToolkit" AssemblyDescription="A Toolkit for the Xenko game engine. Xenko version $(SiliconStudioPackageXenkoVersion)." AssemblyCompany="dfkeenan" AssemblyProduct="XenkoToolkit" AssemblyCopyright="Copyright © $(CopyrightYear)" ComVisible="false" CLSCompliant="false" AssemblyInformationalVersion="$(Major).$(Minor).$(Build).$(Revision)$(PreRelease)" AssemblyVersion="$(Major).$(Minor).$(Build)" AssemblyFileVersion="$(Major).$(Minor).$(Build)" />
   </Target>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,7 +49,7 @@
     <IntermediateOutputPath>obj\Windows\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -424,6 +413,9 @@
     <Compile Include="Physics\SimulationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="CustomDictionary.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SiliconStudioPackageProps)" Condition="Exists('$(SiliconStudioPackageProps)')" />
   <Import Project="$(SiliconStudioXenkoDir)\Targets\SiliconStudio.Common.targets" Condition="Exists('$(SiliconStudioXenkoDir)\Targets\SiliconStudio.Common.targets')" />
@@ -436,7 +428,7 @@
   <Target Name="BeforeBuild">
   </Target>
   -->
-  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' "> 
+  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Exec WorkingDirectory="$(CustomBuildToolsDir)" Command="Nuget.exe pack &quot;$(ProjectPath)&quot; -Properties Configuration=$(Configuration);Platform=$(Platform) -OutputDirectory &quot;..\Source\CustomPackages&quot;" />
   </Target>
 </Project>

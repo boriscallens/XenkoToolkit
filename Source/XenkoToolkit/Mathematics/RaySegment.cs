@@ -1,12 +1,9 @@
-﻿using SiliconStudio.Core;
-using SiliconStudio.Core.Mathematics;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using SiliconStudio.Core;
+using SiliconStudio.Core.Mathematics;
 
 namespace XenkoToolkit.Mathematics
 {
@@ -17,17 +14,17 @@ namespace XenkoToolkit.Mathematics
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct RaySegment : IEquatable<RaySegment>, IFormattable
     {
-        private const string ToStringFormat = "Start:{0} End:{1}";
+        private const string toStringFormat = "Start:{0} End:{1}";
 
         /// <summary>
         /// The position in three dimensional space where the ray starts.
         /// </summary>
-        public Vector3 Start;
+        public readonly Vector3 Start;
 
         /// <summary>
         /// The position in three dimensional space where the ray ends.
         /// </summary>
-        public Vector3 End;
+        public readonly Vector3 End;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XenkoToolkit.Mathematics.RaySegment"/> struct.
@@ -36,8 +33,8 @@ namespace XenkoToolkit.Mathematics
         /// <param name="end">The position in three dimensional space where the ray ends.</param>
         public RaySegment(Vector3 start, Vector3 end)
         {
-            this.Start = start;
-            this.End = end;
+            Start = start;
+            End = end;
         }
 
         /// <summary>
@@ -75,7 +72,7 @@ namespace XenkoToolkit.Mathematics
         /// </returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, ToStringFormat, Start.ToString(), End.ToString());
+            return string.Format(CultureInfo.CurrentCulture, toStringFormat, Start, End);
         }
 
         /// <summary>
@@ -85,10 +82,12 @@ namespace XenkoToolkit.Mathematics
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
+        [SuppressMessage("ReSharper", "ImpureMethodCallOnReadonlyValueField")]
         public string ToString(string format)
         {
-            return string.Format(CultureInfo.CurrentCulture, ToStringFormat, Start.ToString(format, CultureInfo.CurrentCulture),
-                End.ToString(format, CultureInfo.CurrentCulture));
+            return string.Format(CultureInfo.CurrentCulture, toStringFormat
+                , Start.ToString(format, CultureInfo.CurrentCulture)
+                , End.ToString(format, CultureInfo.CurrentCulture));
         }
 
         /// <summary>
@@ -100,7 +99,9 @@ namespace XenkoToolkit.Mathematics
         /// </returns>
         public string ToString(IFormatProvider formatProvider)
         {
-            return string.Format(formatProvider, ToStringFormat, Start.ToString(), End.ToString());
+            return string.Format(formatProvider, toStringFormat
+                , Start.ToString()
+                , End.ToString());
         }
 
         /// <summary>
@@ -111,10 +112,12 @@ namespace XenkoToolkit.Mathematics
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
+        [SuppressMessage("ReSharper", "ImpureMethodCallOnReadonlyValueField")]
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return string.Format(formatProvider, ToStringFormat, Start.ToString(format, formatProvider),
-                End.ToString(format, formatProvider));
+            return string.Format(formatProvider, toStringFormat
+                , Start.ToString(format, formatProvider)
+                , End.ToString(format, formatProvider));
         }
 
         /// <summary>
@@ -153,7 +156,7 @@ namespace XenkoToolkit.Mathematics
                 return false;
             if (value.GetType() != GetType())
                 return false;
-            return Equals((RaySegment)value);
+            return Equals((RaySegment) value);
         }
 
         public static explicit operator Ray(RaySegment raySegment)
@@ -162,6 +165,5 @@ namespace XenkoToolkit.Mathematics
 
             return result;
         }
-
     }
 }

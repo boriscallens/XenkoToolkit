@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace XenkoToolkit.Engine.Navigation.Components
+namespace XenkoToolkit.Demo.Engine.Navigation.Components
 {
     public interface INavigationButtonAction
     {

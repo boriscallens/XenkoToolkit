@@ -1,9 +1,6 @@
-﻿using SiliconStudio.Xenko.Engine;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SiliconStudio.Xenko.Engine;
 
 namespace XenkoToolkit.Engine
 {
@@ -12,13 +9,12 @@ namespace XenkoToolkit.Engine
     /// </summary>
     public static class EntityExtensions
     {
-
         /// <summary>
         /// Performs a breadth first search of the entity and it's children for a component of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of component.</typeparam>
         /// <param name="entity">The entity.</param>
-       /// <returns>The component or null if does no exist.</returns>
+        /// <returns>The component or null if does no exist.</returns>
         /// <exception cref="ArgumentNullException">The entity was <c>null</c>.</exception>
         public static T GetComponentInChildren<T>(this Entity entity) where T : EntityComponent
         {
@@ -43,7 +39,7 @@ namespace XenkoToolkit.Engine
 
                 var children = current.Transform.Children;
 
-                for (int i = 0; i < children.Count; i++)
+                for (var i = 0; i < children.Count; i++)
                 {
                     queue.Enqueue(children[i].Entity);
                 }
@@ -60,7 +56,8 @@ namespace XenkoToolkit.Engine
         /// <param name="includeDisabled">Should search include <see cref="ActivableEntityComponent"/> where <see cref="ActivableEntityComponent.Enabled"/> is <c>false</c>.</param>
         /// <returns>The component or null if does no exist.</returns>
         /// <exception cref="ArgumentNullException">The entity was <c>null</c>.</exception>
-        public static T GetComponentInChildren<T>(this Entity entity, bool includeDisabled = false) where T : ActivableEntityComponent
+        public static T GetComponentInChildren<T>(this Entity entity, bool includeDisabled)
+            where T : ActivableEntityComponent
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -83,7 +80,7 @@ namespace XenkoToolkit.Engine
 
                 var children = current.Transform.Children;
 
-                for (int i = 0; i < children.Count; i++)
+                for (var i = 0; i < children.Count; i++)
                 {
                     queue.Enqueue(children[i].Entity);
                 }
@@ -118,7 +115,7 @@ namespace XenkoToolkit.Engine
 
                 var children = current.Transform.Children;
 
-                for (int i = children.Count - 1; i >= 0; i--)
+                for (var i = children.Count - 1; i >= 0; i--)
                 {
                     stack.Push(children[i].Entity);
                 }
@@ -133,7 +130,8 @@ namespace XenkoToolkit.Engine
         /// <param name="includeDisabled">Should search include <see cref="ActivableEntityComponent"/> where <see cref="ActivableEntityComponent.Enabled"/> is <c>false</c>.</param>
         /// <returns>An iteration on the components.</returns>
         /// <exception cref="ArgumentNullException">The entity was <c>null</c>.</exception>
-        public static IEnumerable<T> GetComponentsInChildren<T>(this Entity entity, bool includeDisabled = false) where T : ActivableEntityComponent
+        public static IEnumerable<T> GetComponentsInChildren<T>(this Entity entity, bool includeDisabled)
+            where T : ActivableEntityComponent
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -155,7 +153,7 @@ namespace XenkoToolkit.Engine
 
                 var children = current.Transform.Children;
 
-                for (int i = children.Count - 1; i >= 0; i--)
+                for (var i = children.Count - 1; i >= 0; i--)
                 {
                     stack.Push(children[i].Entity);
                 }
@@ -184,7 +182,6 @@ namespace XenkoToolkit.Engine
                 {
                     return component;
                 }
-
             } while ((current = current.GetParent()) != null);
 
             return null;
@@ -198,7 +195,8 @@ namespace XenkoToolkit.Engine
         /// <param name="includeDisabled">Should search include <see cref="ActivableEntityComponent"/> where <see cref="ActivableEntityComponent.Enabled"/> is <c>false</c>.</param>
         /// <returns>The component or <c>null</c> if does no exist.</returns>
         /// <exception cref="ArgumentNullException">The entity was <c>null</c>.</exception>
-        public static T GetComponentInParent<T>(this Entity entity, bool includeDisabled = false) where T : ActivableEntityComponent
+        public static T GetComponentInParent<T>(this Entity entity, bool includeDisabled)
+            where T : ActivableEntityComponent
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -213,7 +211,6 @@ namespace XenkoToolkit.Engine
                 {
                     return component;
                 }
-
             } while ((current = current.GetParent()) != null);
 
             return null;
@@ -224,7 +221,7 @@ namespace XenkoToolkit.Engine
         /// </summary>
         /// <typeparam name="T">The type of component.</typeparam>
         /// <param name="entity">The entity.</param>
-       /// <returns>An iteration on the components.</returns>
+        /// <returns>An iteration on the components.</returns>
         /// <exception cref="ArgumentNullException">The entity was <c>null</c>.</exception>
         public static IEnumerable<T> GetComponentsInParent<T>(this Entity entity) where T : EntityComponent
         {
@@ -239,8 +236,6 @@ namespace XenkoToolkit.Engine
                 {
                     yield return component;
                 }
-
-
             } while ((current = current.GetParent()) != null);
         }
 
@@ -252,7 +247,8 @@ namespace XenkoToolkit.Engine
         /// <param name="includeDisabled">Should search include <see cref="ActivableEntityComponent"/> where <see cref="ActivableEntityComponent.Enabled"/> is <c>false</c>.</param>
         /// <returns>An iteration on the components.</returns>
         /// <exception cref="ArgumentNullException">The entity was <c>null</c>.</exception>
-        public static IEnumerable<T> GetComponentsInParent<T>(this Entity entity, bool includeDisabled = false) where T : ActivableEntityComponent
+        public static IEnumerable<T> GetComponentsInParent<T>(this Entity entity, bool includeDisabled)
+            where T : ActivableEntityComponent
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -268,10 +264,7 @@ namespace XenkoToolkit.Engine
                         yield return component;
                     }
                 }
-
-
             } while ((current = current.GetParent()) != null);
         }
     }
-
 }

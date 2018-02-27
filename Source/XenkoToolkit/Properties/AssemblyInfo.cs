@@ -8,15 +8,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Reflection.AssemblyTitle("XenkoToolkit")]
-[assembly: System.Reflection.AssemblyDescription("A Toolkit for the Xenko game engine. Xenko version 2.1.1.1.")]
-[assembly: System.Reflection.AssemblyCompany("dfkeenan")]
-[assembly: System.Reflection.AssemblyProduct("XenkoToolkit")]
-[assembly: System.Reflection.AssemblyCopyright("Copyright © 2018")]
-[assembly: System.Runtime.InteropServices.ComVisible(false)]
-[assembly: System.CLSCompliant(false)]
-[assembly: System.Reflection.AssemblyInformationalVersion("0.1.0.0-alpha")]
-[assembly: System.Reflection.AssemblyVersion("0.1.0")]
-[assembly: System.Reflection.AssemblyFileVersion("0.1.0")]
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+
+[assembly: AssemblyTitle("XenkoToolkit")]
+[assembly: AssemblyDescription("A Toolkit for the Xenko game engine. Xenko version 2.1.1.1.")]
+[assembly: AssemblyCompany("dfkeenan")]
+[assembly: AssemblyProduct("XenkoToolkit")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
+[assembly: ComVisible(false)]
+[assembly: CLSCompliant(false)]
+[assembly: AssemblyInformationalVersion("0.1.0.0-alpha")]
+[assembly: AssemblyVersion("0.1.0")]
+[assembly: AssemblyFileVersion("0.1.0")]
 
 

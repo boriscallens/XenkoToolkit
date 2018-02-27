@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Input;
+﻿using SiliconStudio.Core;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.UI.Controls;
-using XenkoToolkit.Engine.Navigation.Components;
-using SiliconStudio.Core;
+using SiliconStudio.Xenko.UI.Events;
 
-namespace XenkoToolkit.Engine.Navigation.Components
+namespace XenkoToolkit.Demo.Engine.Navigation.Components
 {
     [Display("Navigation Button Handler")]
     public class NavigationButtonHandler : SyncScript
@@ -24,7 +17,7 @@ namespace XenkoToolkit.Engine.Navigation.Components
         public override void Start()
         {           
 
-            Page = Page ?? this.Entity.Get<UIComponent>()?.Page;
+            Page = Page ?? Entity.Get<UIComponent>()?.Page;
 
             if (string.IsNullOrEmpty(ButtonName) || ButtonAction == null) return;
 
@@ -36,7 +29,7 @@ namespace XenkoToolkit.Engine.Navigation.Components
             }
         }
 
-        private void Button_Click(object sender, SiliconStudio.Xenko.UI.Events.RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {           
             var navService = Game.Services.GetService<ISceneNavigationService>();
 

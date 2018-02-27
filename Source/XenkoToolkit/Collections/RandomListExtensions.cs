@@ -1,10 +1,5 @@
-﻿using SiliconStudio.Core.Mathematics;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XenkoToolkit.Collections
 {
@@ -82,12 +77,12 @@ namespace XenkoToolkit.Collections
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            int n = collection.Count;
+            var n = collection.Count;
             while (n > 1)
             {
                 n--;
-                int k = random.Next(n + 1);
-                T value = collection[k];
+                var k = random.Next(n + 1);
+                var value = collection[k];
                 collection[k] = collection[n];
                 collection[n] = value;
             }

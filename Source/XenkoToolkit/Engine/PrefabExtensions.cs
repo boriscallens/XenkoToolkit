@@ -1,10 +1,7 @@
-﻿using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Xenko.Engine;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SiliconStudio.Core.Mathematics;
+using SiliconStudio.Xenko.Engine;
 using XenkoToolkit.Mathematics;
 
 namespace XenkoToolkit.Engine
@@ -100,7 +97,7 @@ namespace XenkoToolkit.Engine
             }
 
             var instance = instances[0];
-            Matrix.Transformation(ref scale, ref rotation, ref translation, out Matrix localMatrix);
+            Matrix.Transformation(ref scale, ref rotation, ref translation, out var localMatrix);
 
             instance.Transform.UpdateLocalMatrix();
             var entityMatrix = instance.Transform.LocalMatrix * localMatrix;
@@ -181,8 +178,7 @@ namespace XenkoToolkit.Engine
                 throw new ArgumentNullException(nameof(prefab));
             }
 
-            Matrix localMatrix;
-            Matrix.Transformation(ref scale, ref rotation, ref translation, out localMatrix);
+            Matrix.Transformation(ref scale, ref rotation, ref translation, out var localMatrix);
 
             var instances = prefab.Instantiate();
 
